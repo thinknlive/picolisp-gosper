@@ -5,6 +5,13 @@ An exercise in working with Picolisp Numbers; fixed point precision, scaling.
 
 Generate and render 'Gosper Curves' -- based on code from the book "Lisp" (1st Ed) by Winston and Horn.
 
+## Info
+
+https://en.wikipedia.org/wiki/Bill_Gosper
+
+https://en.wikipedia.org/wiki/Gosper_curve
+
+
 ## Try it out
 
 From the shell cli:
