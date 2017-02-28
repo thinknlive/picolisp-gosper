@@ -49,8 +49,9 @@ gosper.l  -- Render curve points on canvas, based on code from http://picolisp.c
 
 ## Sample Output
 
-![Image](https://github.com/thinknlive/picolisp-gosper/blob/master/c-1.png)
-*(Run-C-Curve 64.0 0.0 1000000)*
+<img src="https://github.com/thinknlive/picolisp-gosper/blob/master/c-1.png" 
+     alt="(Run-C-Curve 64.0 0.0 1000000)" 
+     width="400" height="300">
 
 ![Image](https://github.com/thinknlive/picolisp-gosper/blob/master/c-2.png)
 *(Run-C-Curve 128.0 0.0 1000000)*
