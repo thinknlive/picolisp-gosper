@@ -6,12 +6,13 @@
 (load "c-curve.l")
 
 (de *DX . 800.0)
-(de *DY . 800.0)
+(de *DY . 600.0)
 
 (setq
    *Delay 256
    *Org-X (*/ *DX 0.5 1.0)
    *Org-Y (*/ *DY 0.5 1.0)
+   *Colors '("black" "white" "grey" "red" "yellow" "green")
 )
 
 (de drawCanvas (Id Dly)
@@ -47,9 +48,9 @@
              (setq X (round (+ (*/ Scl-X (car XY) 1.0) Org-X) 6)
                    Y (round (+ (*/ Scl-Y (cadr XY) 1.0) Org-Y) 6))
              (csLineTo X Y)
-             (csMoveTo X Y))
+             (csMoveTo X Y)
          )
-      (csStroke)))
+      (csStroke))))
 
 (de canvasTest ()
    (msg (text "canvasTest|"))
@@ -58,16 +59,16 @@
          (html 0 "Fixed Point Precision" '("@lib.css" . "canvas {border: 1px solid}") NIL 
             (form NIL
                   (<h2> NIL "Gosper Curves (press Draw! No httpGate? Press twice)")
-                  (<canvas> "$testID" 800 800)
+                  (<canvas> "$testID" (round *DX 0) (round *DY 0))
                   (----)
                   (gui '(+OnClick +Button)
                      "return drawCanvas('$testID', -1)"
                      "Draw C!"
-                     '(Run-C-Curve 300.0 0.0 50000))
+                     '(Run-C-Curve 300.0 0.0 500000))
                   (gui '(+OnClick +Button)
                      "return drawCanvas('$testID', -1)"
                      "Draw Dragon!" 
-                      '(Run-Dragon-Curve 524288.0 0.0 10000))
+                     '(Run-Dragon-Curve 128.0 0.0 1.0 1000000))
                   (----)
                 ) ) ) )
 

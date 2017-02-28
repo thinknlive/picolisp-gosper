@@ -12,10 +12,10 @@
       *Min-Y NIL *Max-Y NIL)
 
 (de Connect-Line (Nxt-X Nxt-Y)
-    #(msg (text "---> Cnt: @1 Prv-XY: @2 @3 Nxt-XY: @4 @5"
-    #      *Cnt 
-    #      (round *Prv-X 2) (round *Prv-Y 2) 
-    #      (round Nxt-X 2) (round Nxt-Y 2)))
+   # (msg (text "---> Cnt: @1 Prv-XY: @2 @3 Nxt-XY: @4 @5"
+   #       *Cnt 
+   #       (round *Prv-X 2) (round *Prv-Y 2) 
+   #       (round Nxt-X 2) (round Nxt-Y 2)))
    (setq *Plot (cons (list Nxt-X Nxt-Y) *Plot)
       *Min-X   (min Nxt-X (or *Min-X Nxt-X))
       *Max-X   (max Nxt-X (or *Max-X Nxt-X))
