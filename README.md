@@ -53,18 +53,23 @@ gosper.l  -- Render curve points on canvas, based on code from http://picolisp.c
      alt="(Run-C-Curve 64.0 0.0 1000000)" 
      width="400" height="300">
 
-![Image](https://github.com/thinknlive/picolisp-gosper/blob/master/c-2.png)
-*(Run-C-Curve 128.0 0.0 1000000)*
+<img src="https://github.com/thinknlive/picolisp-gosper/blob/master/c-2.png" 
+     alt="(Run-C-Curve 128.0 0.0 1000000)" 
+     width="400" height="300">
 
-![Image](https://github.com/thinknlive/picolisp-gosper/blob/master/c-3.png)
-*(Run-C-Curve 256.0 0.0 1000000)*
+<img src="https://github.com/thinknlive/picolisp-gosper/blob/master/c-3.png" 
+     alt="(Run-C-Curve 256.0 0.0 1000000)" 
+     width="400" height="300">
 
-![Image](https://github.com/thinknlive/picolisp-gosper/blob/master/d-1.png) 
-*(Run-Dragon-Curve 128.0 0.0 1.0 1000000)*
+<img src="https://github.com/thinknlive/picolisp-gosper/blob/master/d-1.png" 
+     alt="(Run-Dragon-Curve 128.0 0.0 1.0 1000000)" 
+     width="400" height="300">
 
-![Image](https://github.com/thinknlive/picolisp-gosper/blob/master/d-2.png)
-*(Run-Dragon-Curve 256.0 0.0 1.0 1000000)*
+<img src="https://github.com/thinknlive/picolisp-gosper/blob/master/d-2.png" 
+     alt="(Run-Dragon-Curve 256.0 0.0 1.0 1000000)" 
+     width="400" height="300">
 
-![Image](https://github.com/thinknlive/picolisp-gosper/blob/master/d-3.png)
-*(Run-Dragon-Curve 512.0 0.0 1.0 1000000)*
+<img src="https://github.com/thinknlive/picolisp-gosper/blob/master/d-3.png" 
+     alt="(Run-Dragon-Curve 512.0 0.0 1.0 1000000)" 
+     width="400" height="300">
 
