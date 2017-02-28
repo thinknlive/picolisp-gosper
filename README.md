@@ -54,6 +54,7 @@ gosper.l  -- Render curve points on canvas, based on code from http://picolisp.c
 
 ![Image](https://github.com/thinknlive/picolisp-gosper/blob/master/d-1.png)
 
+![Image](https://github.com/thinknlive/picolisp-gosper/blob/master/d-2.png)
 
 ![Image](https://github.com/thinknlive/picolisp-gosper/blob/master/d-3.png)
 
