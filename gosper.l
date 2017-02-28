@@ -64,11 +64,11 @@
                   (gui '(+OnClick +Button)
                      "return drawCanvas('$testID', -1)"
                      "Draw C!"
-                     '(Run-C-Curve 300.0 0.0 500000))
+                     '(Run-C-Curve 256.0 0.0 1000000))
                   (gui '(+OnClick +Button)
                      "return drawCanvas('$testID', -1)"
                      "Draw Dragon!" 
-                     '(Run-Dragon-Curve 128.0 0.0 1.0 1000000))
+                     '(Run-Dragon-Curve 320.0 0.0 1.0 1000000))
                   (----)
                 ) ) ) )
 
