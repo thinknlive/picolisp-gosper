@@ -3,7 +3,7 @@
 
 (setq PI/4 (*/ 1.0 3.14159265 4.0)
       SQRT-2  (sqrt 2.0 1.0)
-      *Min-Length (sqrt 7.0 1.0)
+      *Min-Length (sqrt 2.0 1.0)
       *Cnt 10000
       *Prv-X 0.0 
       *Prv-Y 0.0

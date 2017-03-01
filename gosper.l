@@ -9,7 +9,7 @@
 (de *DY . 600.0)
 
 (setq
-   *Delay 256
+   *Delay -1 
    *Org-X (*/ *DX 0.5 1.0)
    *Org-Y (*/ *DY 0.5 1.0)
    *Colors '("black" "white" "grey" "red" "yellow" "green")
@@ -36,6 +36,7 @@
       (round Org-X)
       (round Org-Y)))
    (make
+      (csClearRect 0 0 *DX *DY)
       (csStrokeStyle "black")
       (csBeginPath)
       (let (CL (reverse *Plot)
@@ -56,19 +57,20 @@
    (msg (text "canvasTest|"))
    (app)
    (action
-         (html 0 "Fixed Point Precision" '("@lib.css" . "canvas {border: 1px solid}") NIL 
+         (html 0 "Picolisp numbers" '("@lib.css" . "canvas {border: 1px solid}") NIL 
             (form NIL
-                  (<h2> NIL "Gosper Curves (press Draw! No httpGate? Press twice)")
+                  (<h2> NIL "Curves")
                   (<canvas> "$testID" (round *DX 0) (round *DY 0))
+                  (javascript NIL "onload=drawCanvas('$testID', " *Delay ")")       
                   (----)
-                  (gui '(+OnClick +Button)
-                     "return drawCanvas('$testID', -1)"
+                  (gui "btn1" '(+OnClick +Button)
+                     NIL
                      "Draw C!"
-                     '(Run-C-Curve 256.0 0.0 1000000))
-                  (gui '(+OnClick +Button)
-                     "return drawCanvas('$testID', -1)"
+                     '(prog (msg ">> Draw C-Curve") (Run-C-Curve 128.0 0.0 1000000)))
+                  (gui "btn2"  '(+OnClick +Button)
+                     NIL 
                      "Draw Dragon!" 
-                     '(Run-Dragon-Curve 320.0 0.0 1.0 1000000))
+                     '(prog (msg ">> Draw Dragon Curve") (Run-Dragon-Curve 128.0 0.0 1.0 1000000)))
                   (----)
                 ) ) ) )
 
