@@ -1,7 +1,7 @@
 # picolisp-gosper
 ## Gosper Curves
 
-An exercise in working with Picolisp Numbers; fixed point precision, scaling.
+Working with Picolisp numbers; fixed point precision, scaling.
 
 Generate and render 'Gosper Curves' -- based on code from the book "Lisp" (1st Ed) by Winston and Horn.
 
