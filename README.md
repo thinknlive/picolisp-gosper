@@ -41,9 +41,11 @@ gosper.l  -- Render curve points on canvas, based on code from http://picolisp.c
 ~~~~ 
 
 ## Todo: 
+
 ### Do more with the UI... 
 * spigot the results to render the curves gradually
 * allow changing curve parameters from the ui.
+
 ### Generalize...
 * the underlying code to allow specifying and and visualizing L-systems https://en.wikipedia.org/wiki/L-system
 
