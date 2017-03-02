@@ -1,9 +1,9 @@
 # picolisp-gosper
-## Gosper Curves
+## Fractal Curves
 
 Working with Picolisp numbers; fixed point precision, scaling.
 
-Generate and render 'Gosper (and similar) Curves' -- based on code from the book "Lisp" (1st Ed) by Winston and Horn.
+Generate and render fractal curves -- based on code from the book "Lisp" (1st Ed) by Winston and Horn.
 
 ## Info
 
@@ -20,10 +20,10 @@ pil gosper.l -main -go
 ~~~~
 then point your browser at:
 ~~~~
-http://localhost:8080
+http://localhost:8080 (or use httpGate)
 ~~~~
 
-To try different curve parameters, in file **gosper.l** look for something like
+To try different curve parameters, in file **c-curve.l** look for something like
 ~~~~
 (Run-C-Curve 300.0 0.0 1000000)
 ~~~~
@@ -32,19 +32,15 @@ or
 (Run-Dragon-Curve 4096.0 0.0 2000000)
 ~~~~
 
-edit to taste (don't forget your decimal place!) and restart gosper.l
+edit to taste (don't forget your decimal place!) and either click the 'reload' button on the ui or restart the service.
 
 ## Source Files:
 ~~~~ 
-c-curl.l  -- Generate Gosper curve points
+c-curl.l  -- Generate curve points
 gosper.l  -- Render curve points on canvas, based on code from http://picolisp.com/wiki/?canvasDrawing
 ~~~~ 
 
 ## Todo: 
-
-### Do more with the UI... 
-* spigot the results to render the curves gradually
-* allow changing curve parameters from the ui.
 
 ### Generalize...
 * the underlying code to allow specifying and and visualizing L-systems https://en.wikipedia.org/wiki/L-system
