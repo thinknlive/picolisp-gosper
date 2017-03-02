@@ -1,8 +1,11 @@
 (scl 8)
 (load "@lib/math.l")
 
-(setq PI/4 (*/ 1.0 3.14159265 4.0)
-      SQRT-2  (sqrt 2.0 1.0)
+(setq SQRT-2  (sqrt 2.0 1.0)
+      PI/4 (*/ 1.0 3.14159265 4.0)
+      PI/8 (*/ 1.0 3.14159265 8.0)
+      PI/2 (*/ 1.0 3.14159265 2.0)
+      PI/7 (*/ 1.0 3.14159265 7.0)
       *Min-Length (sqrt 2.0 1.0)
       *Cnt 10000
       *Prv-X 0.0 
@@ -11,6 +14,8 @@
       *Min-X NIL *Max-X NIL 
       *Min-Y NIL *Max-Y NIL)
 
+
+# ----------------------------
 (de Connect-Line (Nxt-X Nxt-Y)
    # (msg (text "---> Cnt: @1 Prv-XY: @2 @3 Nxt-XY: @4 @5"
    #       *Cnt 
@@ -25,6 +30,7 @@
       *Prv-Y Nxt-Y)
 )
 
+# -----------------
 (de Plot-Line (L A)
    # (msg (text "#### Length: @1 Angle: @2 Cnt: @3" (format L *Scl) (format A *Scl) *Cnt))
    (Connect-Line
@@ -35,6 +41,7 @@
 # ##########
 # C Curve
 
+# --------------------------------
 (de Run-C-Curve (Length Angle Cnt)
    (setq *Plot NIL
       *Cnt (ifn Cnt 1000 Cnt)
@@ -46,12 +53,13 @@
    (setq *Plot (reverse *Plot))
    (ifn (car *Plot) (pop '*Plot))
    (msg (text "---> C-Curve Cnt: @1 Min-XY: @2 @3 Max-XY: @4 @5"
-       *Cnt 
+       (length *Plot) 
        (round *Min-X 2) (round *Min-Y 2) 
        (round *Max-X 2) (round *Max-Y 2)))
 #   (msg (text "==== Plot: @1" *Plot))
 )
-   
+
+# ------------------------   
 (de C-Curve (Length Angle) 
    (cond 
       ((< Length *Min-Length) (Plot-Line Length Angle)) 
@@ -64,6 +72,7 @@
 # #############
 # Dragon Curve
 
+# ------------------------------------------
 (de Run-Dragon-Curve (Length Angle Sign Cnt)
    (setq *Plot NIL
       *Cnt (ifn Cnt 1000 Cnt)
@@ -76,12 +85,13 @@
    (setq *Plot (reverse *Plot))
    (ifn (car *Plot) (pop '*Plot))
    (msg (text "---> Dragon-Curve Cnt: @1 Min-XY: @2 @3 Max-XY: @4 @5"
-      *Cnt 
+      (length *Plot) 
       (round *Min-X 2) (round *Min-Y 2) 
       (round *Max-X 2) (round *Max-Y 2)))
 #   (msg (text "==== Plot: @1" *Plot))
 )
- 
+
+# ---------------------------------- 
 (de Dragon-Curve (Length Angle Sign)
    (cond 
       ((< Length *Min-Length) (Plot-Line Length Angle))
@@ -92,4 +102,35 @@
             (Dragon-Curve (*/ 1.0 Length SQRT-2)
                         (- Angle (*/ Sign PI/4 1.0))
                         -1.0)))))
+
+# ##################################################################
+
+(setq *CurrentPlot NIL
+      *StepSize 11
+      *Step T
+      *RefreshDelay 100
+      *Resume NIL)
+
+(de Draw-Dragon-Curve ()
+   (msg ">> Draw Dragon Curve") 
+   (setq *Delay *RefreshDelay *CurrentPlot NIL *Step T)
+   (Run-Dragon-Curve 96.0 0.0 1.0 1000000))
+
+(de Draw-C-Curve ()
+   (msg ">> Draw C-Curve") 
+   (setq *Delay *RefreshDelay *CurrentPlot NIL *Step T) 
+   (Run-C-Curve 64.0 0.0 1000000))
+
+(de Stop-Draw ()
+   (msg ">> Stop") 
+   (setq *Delay -1))
+
+(de Draw-Step ()
+   (msg "> Start")
+   (setq *Resume T *Delay *RefreshDelay *Step T))
+
+(de Draw-All ()
+   (msg "> Draw rest") 
+   (setq *Delay -1 *Step NIL))
+
 

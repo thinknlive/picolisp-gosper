@@ -3,20 +3,15 @@
 
 (load "@lib/http.l" "@lib/xhtml.l" "@lib/form.l" "@lib/canvas.l")
 
+(setq 
+   *Delay -1
+   *Last NIL)
+
 (load "c-curve.l")
 
 (de *DX . 800.0)
 (de *DY . 600.0)
 
-(setq
-   *Delay 10 
-   *Org-X (*/ *DX 0.5 1.0)
-   *Org-Y (*/ *DY 0.5 1.0)
-   *Step 1
-   *Colors '("black" "white" "grey" "red" "yellow" "green")
-   *CurrentPlot NIL
-   *Step T
-)
 
 (de drawCanvas (Id Dly)
    (let (
@@ -28,54 +23,73 @@
       Org-X (- 0 (*/ *Min-X Scl-X 1.0)) 
       Org-Y (- 0 (*/ *Min-Y Scl-Y 1.0))
       Plot NIL
-      Step 5
+      Step 0
+      First (not *CurrentPlot)
+      CL NIL
    )
 
    (when (and *Plot (car *Plot))
-      (if *Step
-         (while (and (car *Plot) (gt0 (dec 'Step)))
-            (setq *CurrentPlot 
-               (cons 
-                  (pop '*Plot) 
-                  *CurrentPlot)))
-         (while (car *Plot)
-            (setq *CurrentPlot 
-               (cons 
-                  (pop '*Plot) 
-                  *CurrentPlot)))))
+      (cond 
+         ((and *Step (gt0 *StepSize))
+            (setq Step *StepSize)
+            (while (and (car *Plot) (ge0 (dec 'Step)))
+               (setq *CurrentPlot 
+                  (cons 
+                     (pop '*Plot) 
+                     *CurrentPlot))))
+         (T
+            (while (car *Plot)
+               (setq *CurrentPlot 
+                  (cons 
+                     (pop '*Plot) 
+                     *CurrentPlot))))))
 
-   (setq Plot (reverse *CurrentPlot))
+   (if (and *Step (gt0 *StepSize) (ge0 *Delay) (not *Resume))
+      (setq Plot (reverse (head (+ *StepSize 1) *CurrentPlot)))
+      (setq Plot (reverse *CurrentPlot) *Resume NIL))
 
    #(msg (text "drawCanvas| Range-XY: @1 @2 Scl-XY: @3 @4"
    #   (round Range-X)
    #   (round Range-Y)
    #   (round Scl-X)
    #   (round Scl-Y)))  
-   #(msg (text "drawCanvas| *Org-XY: @1 @2 Org-XY: @3 @4"  
-   #   (round *Org-X)
-   #   (round *Org-Y)
-   #   (round Org-X)
-   #   (round Org-Y)))
-   
-   (make
-      #(csClearRect 0 0 *DX *DY)
-      (csStrokeStyle "black")
-      (csBeginPath)
-      (let (XY (pop 'Plot))
-         (when XY 
-            (setq X (round (+ (*/ Scl-X (car XY) 1.0) Org-X) 6)
-                  Y (round (+ (*/ Scl-Y (cadr XY) 1.0) Org-Y) 6))
-            (csMoveTo X Y)) 
-         (while (setq XY (pop 'Plot))
-             (setq X (round (+ (*/ Scl-X (car XY) 1.0) Org-X) 6)
-                   Y (round (+ (*/ Scl-Y (cadr XY) 1.0) Org-Y) 6))
-             (csLineTo X Y)
-             (csMoveTo X Y)
-         )
-      (csStroke)))))
+   #(msg (text "drawCanvas| First: @1 *Step: @2 *Last: @3 *Plot: @4 *CurrentPlot: @5 Plot: @6 *StepSize: @7 *Delay: @8"  
+   #   First 
+   #   *Step
+   #   *Last
+   #   (length *Plot)
+   #   (length *CurrentPlot)
+   #   (length Plot)
+   #   *StepSize
+   #   *Delay))
+ 
+
+   (unless *Last 
+      (setq CL  
+         (make
+            #(csClearRect 0 0 *DX *DY)
+            (csStrokeStyle "black")
+            (csBeginPath)
+            (let (XY NIL)
+               (when First
+                  (setq XY (pop 'Plot))
+                  (when XY 
+                     (setq X (round (+ (*/ Scl-X (car XY) 1.0) Org-X) 7)
+                           Y (round (+ (*/ Scl-Y (cadr XY) 1.0) Org-Y) 7))
+                     (csMoveTo X Y))) 
+               (do T (NIL (setq XY (pop 'Plot)))
+                  (setq X (round (+ (*/ Scl-X (car XY) 1.0) Org-X) 7)
+                        Y (round (+ (*/ Scl-Y (cadr XY) 1.0) Org-Y) 7))
+                  (csLineTo X Y)
+                  (csMoveTo X Y)))
+            (csStroke))))
+
+   (setq *Last (not *Plot))
+
+   CL))
 
 (de canvasTest ()
-   (msg (text "canvasTest|"))
+   (msg (text ">canvasTest"))
    (app)
    (action
          (html 0 "Picolisp numbers" '("@lib.css" . "canvas {border: 1px solid}") NIL 
@@ -84,33 +98,31 @@
                   (<canvas> "$testID" (round *DX 0) (round *DY 0))
                   (javascript NIL "onload=drawCanvas('$testID', " *Delay ")")       
                   (----)
-                  (gui "btn1" '(+OnClick +Button)
-                     NIL
+                  (gui '(+Button)
                      "C!"
-                     '(prog 
-                        (msg ">> Draw C-Curve") 
-                        (setq *Delay 250 *CurrentPlot NIL *Step T) 
-                        (Run-C-Curve 96.0 0.0 1000000)))
-                  (gui "btn2"  '(+OnClick +Button)
-                     NIL 
+                     '(Draw-C-Curve))
+                  (gui '(+Button)
                      "Dragon!" 
-                     '(prog 
-                        (msg ">> Draw Dragon Curve") 
-                        (setq *Delay 250 *CurrentPlot NIL *Step T)
-                        (Run-Dragon-Curve 128.0 0.0 1.0 1000000)))
-                   (gui "btn3"  '(+OnClick +Button)
-                     NIL 
-                     "Draw rest.." 
-                     '(prog 
-                        (msg ">> Draw rest") 
-                        (setq *Delay -1 *Step NIL))) 
-                   (gui "btn4"  '(+OnClick +Button)
-                     NIL 
-                     "Stop" 
-                     '(prog 
-                        (msg ">> Stop") 
-                        (setq *Plot NIL *Delay -1))) 
+                     '(Draw-Dragon-Curve))
                   (----)
+                   (gui '(+Able +Button)
+                     '(lt0 *Delay)
+                     "Step" 
+                     '(Draw-Step)) 
+                   (gui '(+Button)
+                     "All" 
+                     '(Draw-All)) 
+                   (gui '(+Able +Button)
+                     '(gt0 *Delay)
+                     "Stop" 
+                     '(Stop-Draw))
+                  (----)
+                   (gui '(+Button)
+                     "Reload" 
+                     '(prog
+                        (msg "!Reload")
+                        (setq *Delay -1)
+                        (load "c-curve.l")))
                 ) ) ) )
 
 (de main ()
