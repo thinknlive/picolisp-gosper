@@ -43,6 +43,8 @@
       *Max-X NIL *Max-Y NIL
       *Min-X NIL *Min-Y NIL)
    (C-Curve Length Angle)
+   (setq *Plot (reverse *Plot))
+   (ifn (car *Plot) (pop '*Plot))
    (msg (text "---> C-Curve Cnt: @1 Min-XY: @2 @3 Max-XY: @4 @5"
        *Cnt 
        (round *Min-X 2) (round *Min-Y 2) 
@@ -71,6 +73,8 @@
       *Min-X NIL *Min-Y NIL)
    (default Sign +1.0)
    (Dragon-Curve Length Angle Sign Cnt)
+   (setq *Plot (reverse *Plot))
+   (ifn (car *Plot) (pop '*Plot))
    (msg (text "---> Dragon-Curve Cnt: @1 Min-XY: @2 @3 Max-XY: @4 @5"
       *Cnt 
       (round *Min-X 2) (round *Min-Y 2) 

@@ -9,14 +9,17 @@
 (de *DY . 600.0)
 
 (setq
-   *Delay -1 
+   *Delay 10 
    *Org-X (*/ *DX 0.5 1.0)
    *Org-Y (*/ *DY 0.5 1.0)
+   *Step 1
    *Colors '("black" "white" "grey" "red" "yellow" "green")
+   *CurrentPlot NIL
+   *Step T
 )
 
 (de drawCanvas (Id Dly)
-   (setq 
+   (let (
       Range-X (abs (- *Max-X *Min-X))
       Range-Y (abs (- *Max-Y *Min-Y))
       Aspect-XY (*/ 1.0 Range-X Range-Y)
@@ -24,34 +27,52 @@
       Scl-Y (*/ (*/ 1.0 *DY Range-Y) 1.0 1.0)
       Org-X (- 0 (*/ *Min-X Scl-X 1.0)) 
       Org-Y (- 0 (*/ *Min-Y Scl-Y 1.0))
+      Plot NIL
+      Step 5
    )
-   (msg (text "drawCanvas| Range-XY: @1 @2 Scl-XY: @3 @4"
-      (round Range-X)
-      (round Range-Y)
-      (round Scl-X)
-      (round Scl-Y)))  
-   (msg (text "drawCanvas| *Org-XY: @1 @2 Org-XY: @3 @4"  
-      (round *Org-X)
-      (round *Org-Y)
-      (round Org-X)
-      (round Org-Y)))
+
+   (when (and *Plot (car *Plot))
+      (if *Step
+         (while (and (car *Plot) (gt0 (dec 'Step)))
+            (setq *CurrentPlot 
+               (cons 
+                  (pop '*Plot) 
+                  *CurrentPlot)))
+         (while (car *Plot)
+            (setq *CurrentPlot 
+               (cons 
+                  (pop '*Plot) 
+                  *CurrentPlot)))))
+
+   (setq Plot (reverse *CurrentPlot))
+
+   #(msg (text "drawCanvas| Range-XY: @1 @2 Scl-XY: @3 @4"
+   #   (round Range-X)
+   #   (round Range-Y)
+   #   (round Scl-X)
+   #   (round Scl-Y)))  
+   #(msg (text "drawCanvas| *Org-XY: @1 @2 Org-XY: @3 @4"  
+   #   (round *Org-X)
+   #   (round *Org-Y)
+   #   (round Org-X)
+   #   (round Org-Y)))
+   
    (make
-      (csClearRect 0 0 *DX *DY)
+      #(csClearRect 0 0 *DX *DY)
       (csStrokeStyle "black")
       (csBeginPath)
-      (let (CL (reverse *Plot)
-           XY (pop 'CL))
+      (let (XY (pop 'Plot))
          (when XY 
             (setq X (round (+ (*/ Scl-X (car XY) 1.0) Org-X) 6)
                   Y (round (+ (*/ Scl-Y (cadr XY) 1.0) Org-Y) 6))
             (csMoveTo X Y)) 
-         (while (setq XY (pop 'CL))
+         (while (setq XY (pop 'Plot))
              (setq X (round (+ (*/ Scl-X (car XY) 1.0) Org-X) 6)
                    Y (round (+ (*/ Scl-Y (cadr XY) 1.0) Org-Y) 6))
              (csLineTo X Y)
              (csMoveTo X Y)
          )
-      (csStroke))))
+      (csStroke)))))
 
 (de canvasTest ()
    (msg (text "canvasTest|"))
@@ -65,12 +86,30 @@
                   (----)
                   (gui "btn1" '(+OnClick +Button)
                      NIL
-                     "Draw C!"
-                     '(prog (msg ">> Draw C-Curve") (Run-C-Curve 128.0 0.0 1000000)))
+                     "C!"
+                     '(prog 
+                        (msg ">> Draw C-Curve") 
+                        (setq *Delay 250 *CurrentPlot NIL *Step T) 
+                        (Run-C-Curve 96.0 0.0 1000000)))
                   (gui "btn2"  '(+OnClick +Button)
                      NIL 
-                     "Draw Dragon!" 
-                     '(prog (msg ">> Draw Dragon Curve") (Run-Dragon-Curve 128.0 0.0 1.0 1000000)))
+                     "Dragon!" 
+                     '(prog 
+                        (msg ">> Draw Dragon Curve") 
+                        (setq *Delay 250 *CurrentPlot NIL *Step T)
+                        (Run-Dragon-Curve 128.0 0.0 1000000)))
+                   (gui "btn3"  '(+OnClick +Button)
+                     NIL 
+                     "Draw rest.." 
+                     '(prog 
+                        (msg ">> Draw rest") 
+                        (setq *Delay -1 *Step NIL))) 
+                   (gui "btn4"  '(+OnClick +Button)
+                     NIL 
+                     "Stop" 
+                     '(prog 
+                        (msg ">> Stop") 
+                        (setq *Plot NIL *Delay -1))) 
                   (----)
                 ) ) ) )
 
