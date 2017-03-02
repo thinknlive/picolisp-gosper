@@ -97,7 +97,7 @@
                      '(prog 
                         (msg ">> Draw Dragon Curve") 
                         (setq *Delay 250 *CurrentPlot NIL *Step T)
-                        (Run-Dragon-Curve 128.0 0.0 1000000)))
+                        (Run-Dragon-Curve 128.0 0.0 1.0 1000000)))
                    (gui "btn3"  '(+OnClick +Button)
                      NIL 
                      "Draw rest.." 
