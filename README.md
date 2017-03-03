@@ -40,30 +40,53 @@ c-curl.l  -- Generate curve points
 gosper.l  -- Render curve points on canvas, based on code from http://picolisp.com/wiki/?canvasDrawing
 ~~~~ 
 
-## Todo: 
+## L-system
 
-### Generalize...
-* the underlying code to allow specifying and and visualizing L-systems https://en.wikipedia.org/wiki/L-system
+The Gosper generator code is based on the L-system rules defined at https://en.wikipedia.org/wiki/L-system
+
+## TODO...
+
+Add more L-system functions, in particular, ones that push and pop state.
 
 ## Sample Output
 
-<img src="https://github.com/thinknlive/picolisp-gosper/blob/master/c-1.png" 
+<img src="https://github.com/thinknlive/picolisp-gosper/blob/master/example/g-1.png" 
+     alt="(Run-Gosper-Curve 64.0 0.0 2 1000000)" 
+     width="400" height="300">
+
+<img src="https://github.com/thinknlive/picolisp-gosper/blob/master/example/g-2.png" 
+     alt="(Run-Gosper-Curve 64.0 0.0 3 1000000)" 
+     width="400" height="300">
+
+<img src="https://github.com/thinknlive/picolisp-gosper/blob/master/example/g-3.png" 
+     alt="(Run-Gosper-Curve 64.0 0.0 4 1000000)" 
+     width="400" height="300">
+
+
+<hr>
+
+
+<img src="https://github.com/thinknlive/picolisp-gosper/blob/master/example/c-1.png" 
      alt="(Run-C-Curve 64.0 0.0 1000000)" 
      width="400" height="300">
 
-<img src="https://github.com/thinknlive/picolisp-gosper/blob/master/c-2.png" 
+<img src="https://github.com/thinknlive/picolisp-gosper/blob/master/example/c-2.png" 
      alt="(Run-C-Curve 128.0 0.0 1000000)" 
      width="400" height="300">
 
-<img src="https://github.com/thinknlive/picolisp-gosper/blob/master/c-3.png" 
+<img src="https://github.com/thinknlive/picolisp-gosper/blob/master/example/c-3.png" 
      alt="(Run-C-Curve 256.0 0.0 1000000)" 
      width="400" height="300">
 
-<img src="https://github.com/thinknlive/picolisp-gosper/blob/master/d-1.png" 
+
+<hr>
+
+
+<img src="https://github.com/thinknlive/picolisp-gosper/blob/master/example/d-1.png" 
      alt="(Run-Dragon-Curve 128.0 0.0 1.0 1000000)" 
      width="400" height="300">
 
-<img src="https://github.com/thinknlive/picolisp-gosper/blob/master/d-2.png" 
+<img src="https://github.com/thinknlive/picolisp-gosper/blob/master/example/d-2.png" 
      alt="(Run-Dragon-Curve 256.0 0.0 1.0 1000000)" 
      width="400" height="300">
 
@@ -71,6 +94,7 @@ gosper.l  -- Render curve points on canvas, based on code from http://picolisp.c
      alt="(Run-Dragon-Curve 512.0 0.0 1.0 1000000)" 
      width="400" height="300">
 
+:w
 
 
 
