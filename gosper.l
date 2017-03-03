@@ -14,6 +14,8 @@
 
 
 (de drawCanvas (Id Dly)
+   # Scale, shift the set of input points to fit entirely in view
+   
    (let (
       Range-X (abs (- *Max-X *Min-X))
       Range-Y (abs (- *Max-Y *Min-Y))
@@ -104,6 +106,9 @@
                   (gui '(+Button)
                      "Dragon!" 
                      '(Draw-Dragon-Curve))
+                  (gui '(+Button)
+                     "Gosper!" 
+                     '(Draw-Gosper-Curve))
                   (----)
                    (gui '(+Able +Button)
                      '(lt0 *Delay)
