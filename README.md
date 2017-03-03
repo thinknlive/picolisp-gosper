@@ -26,10 +26,9 @@ http://localhost:8080 (or use httpGate)
 To try different curve parameters, in file **c-curve.l** look for something like
 ~~~~
 (Run-C-Curve 300.0 0.0 1000000)
-~~~~
-or
-~~~~
 (Run-Dragon-Curve 4096.0 0.0 2000000)
+or
+(Run-Gosper-Curve 10.0 0.0 5 2000000)
 ~~~~
 
 edit to taste (don't forget your decimal place!) and either click the 'reload' button on the ui or restart the service.
