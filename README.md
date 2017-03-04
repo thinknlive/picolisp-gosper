@@ -26,10 +26,9 @@ http://localhost:8080 (or use httpGate)
 To try different curve parameters, in file **c-curve.l** look for something like
 ~~~~
 (Run-C-Curve 300.0 0.0 1000000)
-~~~~
-or
-~~~~
 (Run-Dragon-Curve 4096.0 0.0 2000000)
+or
+(Run-Gosper-Curve 10.0 0.0 5 2000000)
 ~~~~
 
 edit to taste (don't forget your decimal place!) and either click the 'reload' button on the ui or restart the service.
@@ -44,21 +43,21 @@ gosper.l  -- Render curve points on canvas, based on code from http://picolisp.c
 
 The Gosper generator code is based on the L-system rules defined at https://en.wikipedia.org/wiki/L-system
 
-## TODO...
+### TODO...
 
 Add more L-system functions, in particular, ones that push and pop state.
 
 ## Sample Output
 
-<img src="https://github.com/thinknlive/picolisp-gosper/blob/master/example/g-1.png" 
+<img src="https://github.com/thinknlive/picolisp-gosper/blob/master/examples/g-1.png" 
      alt="(Run-Gosper-Curve 64.0 0.0 2 1000000)" 
      width="400" height="300">
 
-<img src="https://github.com/thinknlive/picolisp-gosper/blob/master/example/g-2.png" 
+<img src="https://github.com/thinknlive/picolisp-gosper/blob/master/examples/g-2.png" 
      alt="(Run-Gosper-Curve 64.0 0.0 3 1000000)" 
      width="400" height="300">
 
-<img src="https://github.com/thinknlive/picolisp-gosper/blob/master/example/g-3.png" 
+<img src="https://github.com/thinknlive/picolisp-gosper/blob/master/examples/g-3.png" 
      alt="(Run-Gosper-Curve 64.0 0.0 4 1000000)" 
      width="400" height="300">
 
@@ -66,15 +65,15 @@ Add more L-system functions, in particular, ones that push and pop state.
 <hr>
 
 
-<img src="https://github.com/thinknlive/picolisp-gosper/blob/master/example/c-1.png" 
+<img src="https://github.com/thinknlive/picolisp-gosper/blob/master/examples/c-1.png" 
      alt="(Run-C-Curve 64.0 0.0 1000000)" 
      width="400" height="300">
 
-<img src="https://github.com/thinknlive/picolisp-gosper/blob/master/example/c-2.png" 
+<img src="https://github.com/thinknlive/picolisp-gosper/blob/master/examples/c-2.png" 
      alt="(Run-C-Curve 128.0 0.0 1000000)" 
      width="400" height="300">
 
-<img src="https://github.com/thinknlive/picolisp-gosper/blob/master/example/c-3.png" 
+<img src="https://github.com/thinknlive/picolisp-gosper/blob/master/examples/c-3.png" 
      alt="(Run-C-Curve 256.0 0.0 1000000)" 
      width="400" height="300">
 
@@ -82,15 +81,15 @@ Add more L-system functions, in particular, ones that push and pop state.
 <hr>
 
 
-<img src="https://github.com/thinknlive/picolisp-gosper/blob/master/example/d-1.png" 
+<img src="https://github.com/thinknlive/picolisp-gosper/blob/master/examples/d-1.png" 
      alt="(Run-Dragon-Curve 128.0 0.0 1.0 1000000)" 
      width="400" height="300">
 
-<img src="https://github.com/thinknlive/picolisp-gosper/blob/master/example/d-2.png" 
+<img src="https://github.com/thinknlive/picolisp-gosper/blob/master/examples/d-2.png" 
      alt="(Run-Dragon-Curve 256.0 0.0 1.0 1000000)" 
      width="400" height="300">
 
-<img src="https://github.com/thinknlive/picolisp-gosper/blob/master/d-3.png" 
+<img src="https://github.com/thinknlive/picolisp-gosper/blob/master/examples/d-3.png" 
      alt="(Run-Dragon-Curve 512.0 0.0 1.0 1000000)" 
      width="400" height="300">
 
