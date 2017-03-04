@@ -102,6 +102,90 @@
    )
 )
 
+# -------------------------------
+(de Sier-Curve (Length Angle N) 
+   # Approximate the Sierpinski triangle 
+   # variables : A B
+   # constants : + −
+   # start  : A
+   # rules  : (A → +B−A−B+), (B → −A+B+A−)
+   # angle  : 60°
+
+   (let 
+      (A (chop "+B-A-B+")  
+       B (chop "-A+B+A-") 
+       C A
+       F '((L) (fish atom (mapcar '((X) (cond ((= X "A") A) ((= X "B") B) (T X))) L))) ) 
+
+      # Generate points
+      (do N (setq C (F C)))
+
+      # Plot points
+      (map '((R) 
+         (case (car R)
+            (("A" "B") (Plot-Line Length Angle))
+            ("+" (setq Angle (+ Angle PI/3)))
+            ("-" (setq Angle (- Angle PI/3))) 
+            (T (msg (text "?Sier-Curve: No-match: @1" @))) )) C )
+
+   )
+)
+
+# -------------------------------
+(de Koch-Curve (Length Angle N) 
+   # A variant of the Koch curve which uses only right angles.
+   # variables : F
+   # constants : + −
+   # start  : F
+   # rules  : (F → F+F−F−F+F)
+   # Here, F means "draw forward", + means "turn left 90°", and − means "turn right 90°"
+
+   (let 
+      (A (chop "A+A-A-A+A")  
+       C A
+       F '((L) (fish atom (mapcar '((X) (cond ((= X "A") A) ((= X "B") B) (T X))) L))) ) 
+
+      # Generate points
+      (do N (setq C (F C)))
+
+      # Plot points
+      (map '((R) 
+         (case (car R)
+            (("A" "B") (Plot-Line Length Angle))
+            ("+" (setq Angle (+ Angle PI/2)))
+            ("-" (setq Angle (- Angle PI/2))) 
+            (T (msg (text "?Koch-Curve: No-match: @1" @))) )) C )
+
+   )
+)
+# -------------------------------
+# Hilbert curve 
+# (L -> +RF-LFL-FR+) 
+# (R -> -LF+RFR+FL-)
+
+(de Hilbert-Curve (Length Angle N) 
+   (let 
+      (A (chop "+BF-AFA-FB+") 
+       B (chop "-AF+BFB+FA-") 
+       C A
+       _Fn '((L) (fish atom (mapcar '((X) (cond ((= X "A") A) ((= X "B") B) (T X))) L))) ) 
+
+      # Generate points
+      (do N (setq C (_Fn C)))
+
+      # Plot points
+      (map '((P)
+         (case (car P)
+            (("F") (Plot-Line Length Angle))
+            ("+" (setq Angle (+ Angle PI/2)))
+            ("-" (setq Angle (- Angle PI/2))) 
+            (("A" "B") NIL)
+            (T (msg (text "?Hilbert-Curve: No-match: @1" (car P)))) )) C )
+
+   )
+)
+
+
 # ################################
 # Wrapper functions for generators
 
@@ -172,6 +256,72 @@
 
 )
 
+# ---------------------------------------
+(de Run-Sier-Curve (Length Angle N Cnt)
+   
+   (setq *Plot NIL
+      *Cnt (ifn Cnt 10000 Cnt)
+      *Prv-X 0.0
+      *Prv-Y 0.0
+      *Max-X NIL *Max-Y NIL
+      *Min-X NIL *Min-Y NIL)
+   (default N 3)
+   
+   (Sier-Curve Length Angle N)
+   (setq *Plot (reverse *Plot))
+   (ifn (car *Plot) (pop '*Plot))
+   
+   (msg (text "---> Sier-Curve Cnt: @1 Min-XY: @2 @3 Max-XY: @4 @5"
+      (length *Plot) 
+      (round *Min-X 2) (round *Min-Y 2) 
+      (round *Max-X 2) (round *Max-Y 2)))
+
+)
+
+# ---------------------------------------
+(de Run-Koch-Curve (Length Angle N Cnt)
+   
+   (setq *Plot NIL
+      *Cnt (ifn Cnt 10000 Cnt)
+      *Prv-X 0.0
+      *Prv-Y 0.0
+      *Max-X NIL *Max-Y NIL
+      *Min-X NIL *Min-Y NIL)
+   (default N 3)
+   
+   (Koch-Curve Length Angle N)
+   (setq *Plot (reverse *Plot))
+   (ifn (car *Plot) (pop '*Plot))
+   
+   (msg (text "---> Koch-Curve Cnt: @1 Min-XY: @2 @3 Max-XY: @4 @5"
+      (length *Plot) 
+      (round *Min-X 2) (round *Min-Y 2) 
+      (round *Max-X 2) (round *Max-Y 2)))
+
+)
+
+# ---------------------------------------
+(de Run-Hilbert-Curve (Length Angle N Cnt)
+   
+   (setq *Plot NIL
+      *Cnt (ifn Cnt 10000 Cnt)
+      *Prv-X 0.0
+      *Prv-Y 0.0
+      *Max-X NIL *Max-Y NIL
+      *Min-X NIL *Min-Y NIL)
+   (default N 3)
+   
+   (Hilbert-Curve Length Angle N)
+   (setq *Plot (reverse *Plot))
+   (ifn (car *Plot) (pop '*Plot))
+   
+   (msg (text "---> Hilbert-Curve Cnt: @1 Min-XY: @2 @3 Max-XY: @4 @5"
+      (length *Plot) 
+      (round *Min-X 2) (round *Min-Y 2) 
+      (round *Max-X 2) (round *Max-Y 2)))
+
+)
+
 
 # ######################################
 # GUI Hooks
@@ -179,13 +329,13 @@
 (setq *CurrentPlot NIL    
       *StepSize 11       
       *Step T           
-      *RefreshDelay 100
+      *RefreshDelay 200
       *Resume NIL)
 
 (de Draw-Dragon-Curve ()
    (msg ">> Draw Dragon Curve") 
    (setq *Delay *RefreshDelay *CurrentPlot NIL *Step T)
-   (Run-Dragon-Curve 32.0 0.0 1.0 1000000))
+   (Run-Dragon-Curve 64.0 0.0 1.0 1000000))
 
 (de Draw-C-Curve ()
    (msg ">> Draw C-Curve") 
@@ -195,7 +345,22 @@
 (de Draw-Gosper-Curve ()
    (msg ">> Draw Gosper-Curve") 
    (setq *Delay *RefreshDelay *CurrentPlot NIL *Step T) 
-   (Run-Gosper-Curve 64.0 0.0 4 2000000))
+   (Run-Gosper-Curve 64.0 0.0 3 2000000))
+
+(de Draw-Sier-Curve ()
+   (msg ">> Draw Sier-Curve") 
+   (setq *Delay *RefreshDelay *CurrentPlot NIL *Step T) 
+   (Run-Sier-Curve 2.0 0.0 6 2000000))
+
+(de Draw-Koch-Curve ()
+   (msg ">> Draw Koch-Curve") 
+   (setq *Delay *RefreshDelay *CurrentPlot NIL *Step T) 
+   (Run-Koch-Curve 2.0 0.0 4 2000000))
+
+(de Draw-Hilbert-Curve ()
+   (msg ">> Draw Hilbert-Curve") 
+   (setq *Delay *RefreshDelay *CurrentPlot NIL *Step T) 
+   (Run-Hilbert-Curve 2.0 0.0 6 2000000))
 
 (de Stop-Draw ()
    (msg ">> Stop") 
@@ -203,10 +368,10 @@
 
 (de Draw-Step ()
    (msg "> Start")
-   (setq *Resume T *Delay *RefreshDelay *Step T))
+   (setq *Step T *Resume T *Delay *RefreshDelay *Step T))
 
 (de Draw-All ()
    (msg "> Draw rest") 
-   (setq *Delay -1 *Step NIL))
+   (setq *Step NIL *Delay -1 *Step NIL))
 
 

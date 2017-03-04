@@ -43,8 +43,7 @@
     (default MaxDepth 2)
     
     (L-Run A 1)))
-    
-  
+
 # ----------------------------------------------------------------------
 # Generate L-sytem Gosper curve states with iterative implementation.
 # Iteration, in this case, is not nearly as scalable as recursion
@@ -60,4 +59,55 @@
       (do N (setq C (F C)))
       (length (prin C))))
     
+# ----------------------------------
+# Generate Cantor set on real line R
+# variables : A B
+# constants : none
+# start  : A {starting character string}
+# rules  : (A → ABA), (B → BBB)
+# Let A mean "draw forward" and B mean "move forward".
+    
+
+(de CantorR (MaxDepth)
+  (let
+    (A (chop "ABA")
+     B (chop "BBB"))
+
+    (default MaxDepth 2)
+
+    (L-Run A 1)))
+ 
+# ---------------------
+# Pythagoras tree[edit]
+# variables : 0, 1
+# constants: [, ]
+# axiom  : 0
+# rules  : (1 → 11), (0 → 1[0]0)
+ 
+(de PythagorasR (MaxDepth)
+  (let
+    (A (chop "B[A]A")
+     B (chop "BB"))
+
+    (default MaxDepth 2)
+
+    (L-Run A 1)))
+
+# ---------------------------------------------------------
+# A variant of the Koch curve which uses only right angles.
+# variables : F
+# constants : + −
+# start  : F
+# rules  : (F → F+F−F−F+F)
+# Here, F means "draw forward", + means "turn left 90°", and − means "turn right 90°"
+
+(de KochR (MaxDepth)
+   (let
+      (A (chop "A+A-A-A+A"))
+
+      (default MaxDepth 2)
+
+      (L-Run A 1)))
+
+
 

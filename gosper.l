@@ -46,6 +46,7 @@
                      (pop '*Plot) 
                      *CurrentPlot))))))
 
+   # Draw next chunk, resume drawing, draw rest
    (if (and *Step (gt0 *StepSize) (ge0 *Delay) (not *Resume))
       (setq Plot (reverse (head (+ *StepSize 1) *CurrentPlot)))
       (setq Plot (reverse *CurrentPlot) *Resume NIL))
@@ -66,7 +67,8 @@
    #   *Delay))
  
 
-   (unless *Last 
+   (if *Last 
+      (setq CL (make (csClosePath)))
       (setq CL  
          (make
             #(csClearRect 0 0 *DX *DY)
@@ -109,6 +111,15 @@
                   (gui '(+Button)
                      "Gosper!" 
                      '(Draw-Gosper-Curve))
+                  (gui '(+Button)
+                     "Sier!" 
+                     '(Draw-Sier-Curve))
+                  (gui '(+Button)
+                     "Koch!" 
+                     '(Draw-Koch-Curve))
+                  (gui '(+Button)
+                     "Hilbert!" 
+                     '(Draw-Hilbert-Curve))
                   (----)
                    (gui '(+Able +Button)
                      '(lt0 *Delay)
