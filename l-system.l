@@ -115,4 +115,36 @@
       (L-Run A 1)))
 
 
+# --------------------------------------------------
+# Generate Gosper using a 'co routine
+# (GosperGen T)   # STOP
+# (out "test.dat" (do (* 1024 1024 10) (prin (GosperGen))))
+
+(de GosperGen (V)
+   (if (=T V)
+      (co 'gospergen)   # Stop
+      (co 'gospergen
+         (let (
+            _MaxDepth 12
+            _Plot '((L) (mapc yield L))
+            _Fn '((L)
+               (fish atom (mapcar  
+                  '((X) 
+                     (cond 
+                        ((= X "A") A) 
+                        ((= X "B") B) 
+                        (T X))) L) ) ) 
+            _L-Run '((L D)
+               (if (>= D _MaxDepth)
+                  (_Plot L) 
+                  (map '((X) 
+                     (_L-Run 
+                        (_Fn (list (car X))) 
+                              (inc D))) L)) )
+            A (chop "A-B--B+A++AA+B-")
+            B (chop "+A-BB--B-A++A+B") )
+    
+            (_L-Run A 1) ) ) ) )
+
+
 
