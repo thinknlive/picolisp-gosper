@@ -8,12 +8,12 @@
   (mapc prin L) )
 
 (de Fn (L)
-   (extract  
+   (fish atom (mapcar  
       '((X) 
          (cond 
             ((= X "A") A) 
             ((= X "B") B) 
-            (T X))) L) ) 
+            (T X))) L) ) ) 
 
 
 (de L-Run (L D)
@@ -64,7 +64,6 @@
 # start  : A {starting character string}
 # rules  : (A → ABA), (B → BBB)
 # Let A mean "draw forward" and B mean "move forward".
-    
 
 (de CantorR (MaxDepth)
   (let
@@ -102,6 +101,14 @@
 (de KochR (MaxDepth)
    (let
       (A (chop "A+A-A-A+A"))
+
+      (default MaxDepth 2)
+
+      (L-Run A 1)))
+
+(de PeanoR (MaxDepth)
+   (let
+      (A (chop "A+A-A-A-A+A+A+A-A"))
 
       (default MaxDepth 2)
 
