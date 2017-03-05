@@ -103,23 +103,26 @@
                   (javascript NIL "onload=drawCanvas('$testID', " *Delay ")")       
                   (----)
                   (gui '(+Button)
-                     "C!"
+                     "C"
                      '(Draw-C-Curve))
                   (gui '(+Button)
-                     "Dragon!" 
+                     "Dragon" 
                      '(Draw-Dragon-Curve))
                   (gui '(+Button)
-                     "Gosper!" 
+                     "Gosper" 
                      '(Draw-Gosper-Curve))
                   (gui '(+Button)
-                     "Sier!" 
+                     "Sier" 
                      '(Draw-Sier-Curve))
                   (gui '(+Button)
-                     "Koch!" 
+                     "Koch" 
                      '(Draw-Koch-Curve))
                   (gui '(+Button)
-                     "Hilbert!" 
+                     "Hilbert" 
                      '(Draw-Hilbert-Curve))
+                  (gui '(+Button)
+                     "Peano" 
+                     '(Draw-Peano-Curve))
                   (----)
                    (gui '(+Able +Button)
                      '(lt0 *Delay)

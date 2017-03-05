@@ -158,6 +158,33 @@
 
    )
 )
+
+
+# -------------------------------
+# Peano Curve
+# F -> F+F-F-F-F+F+F+F-F
+(de Peano-Curve (Length Angle N)
+   (let 
+      (A (chop "A+A-A-A-A+A+A+A-A")
+      C A
+      _Fn '((L) (fish atom (mapcar '((X) (cond ((= X "A") A) ((= X "B") B) (T X))) L))) ) 
+
+      # Generate points
+      (do N (setq C (_Fn C)))
+
+      # Plot points
+      (map '((P)
+         (case (car P)
+            (("A") (Plot-Line Length Angle))
+            ("+" (setq Angle (+ Angle PI/2)))
+            ("-" (setq Angle (- Angle PI/2))) 
+            (("A" "B") NIL)
+            (T (msg (text "?Peano-Curve: No-match: @1" (car P)))) )) C )
+
+   )
+)
+ 
+
 # -------------------------------
 # Hilbert curve 
 # (L -> +RF-LFL-FR+) 
@@ -322,12 +349,33 @@
 
 )
 
+# ---------------------------------------
+(de Run-Peano-Curve (Length Angle N Cnt)
+   
+   (setq *Plot NIL
+      *Cnt (ifn Cnt 10000 Cnt)
+      *Prv-X 0.0
+      *Prv-Y 0.0
+      *Max-X NIL *Max-Y NIL
+      *Min-X NIL *Min-Y NIL)
+   (default N 3)
+   
+   (Peano-Curve Length Angle N)
+   (setq *Plot (reverse *Plot))
+   (ifn (car *Plot) (pop '*Plot))
+   
+   (msg (text "--->Peano-Curve Cnt: @1 Min-XY: @2 @3 Max-XY: @4 @5"
+      (length *Plot) 
+      (round *Min-X 2) (round *Min-Y 2) 
+      (round *Max-X 2) (round *Max-Y 2)))
+
+)
 
 # ######################################
 # GUI Hooks
 
 (setq *CurrentPlot NIL    
-      *StepSize 11       
+      *StepSize 1       
       *Step T           
       *RefreshDelay 200
       *Resume NIL)
@@ -362,6 +410,12 @@
    (setq *Delay *RefreshDelay *CurrentPlot NIL *Step T) 
    (Run-Hilbert-Curve 2.0 0.0 6 2000000))
 
+(de Draw-Peano-Curve ()
+   (msg ">> Draw Peano-Curve") 
+   (setq *Delay *RefreshDelay *CurrentPlot NIL *Step T) 
+   (Run-Peano-Curve 2.0 0.0 2 2000000))
+
+
 (de Stop-Draw ()
    (msg ">> Stop") 
    (setq *Delay -1))
@@ -372,6 +426,6 @@
 
 (de Draw-All ()
    (msg "> Draw rest") 
-   (setq *Step NIL *Delay -1 *Step NIL))
+   (setq *Resume NIL *Step NIL *Delay -1 *Step NIL))
 
 
