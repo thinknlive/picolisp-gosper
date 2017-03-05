@@ -120,31 +120,30 @@
 # (GosperGen T)   # STOP
 # (out "test.dat" (do (* 1024 1024 10) (prin (GosperGen))))
 
-(de GosperGen (V)
-   (if (=T V)
-      (co 'gospergen)   # Stop
+(de GosperGen (D)
+   (if (=T D)
+      (co 'gospergen)
       (co 'gospergen
-         (let (
-            _MaxDepth 12
-            _Plot '((L) (mapc yield L))
-            _Fn '((L)
-               (fish atom (mapcar  
-                  '((X) 
-                     (cond 
-                        ((= X "A") A) 
-                        ((= X "B") B) 
-                        (T X))) L) ) ) 
-            _L-Run '((L D)
-               (if (>= D _MaxDepth)
-                  (_Plot L) 
-                  (map '((X) 
-                     (_L-Run 
-                        (_Fn (list (car X))) 
-                              (inc D))) L)) )
-            A (chop "A-B--B+A++AA+B-")
-            B (chop "+A-BB--B-A++A+B") )
-    
-            (_L-Run A 1) ) ) ) )
+         (let
+            (A (chop "A-B--B+A++AA+B-") 
+               B (chop "+A-BB--B-A++A+B")
+               _MaxDepth D 
+               _Plot '((L) (mapc yield L))
+               _Fn
+               '((X)
+                  (cond
+                     ((= X "A") A)
+                     ((= X "B") B)
+                     (T (list X)) ) )
+               _L-Run
+               '((L D)
+                  (if (>= D _MaxDepth)
+                     (_Plot L)
+                     (mapc
+                        '((X) (_L-Run (_Fn X) (inc D)))
+                        L ) ) ) ) 
+            (default _MaxDepth 13)
+            (_L-Run A 1) ) ) ) ) 
 
 
 
