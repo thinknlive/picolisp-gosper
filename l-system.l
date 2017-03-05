@@ -5,26 +5,24 @@
 # Recursive implementation that emits state changes.
 
 (de Plot (L)
-  (map '((X) (prin (car X))) L) )
+  (mapc prin L) )
 
 (de Fn (L)
-  (let R
-    (fish atom 
-      (mapcar '((X) 
-        (cond 
-          ((= X "A") A) 
-          ((= X "B") B) 
-          (T X))) L) )
-    R))
+   (extract  
+      '((X) 
+         (cond 
+            ((= X "A") A) 
+            ((= X "B") B) 
+            (T X))) L) ) 
+
 
 (de L-Run (L D)
-  (cond
-    ((>= D MaxDepth)
-      (Plot L) )
-    (T (map '((X) 
+  (if (>= D MaxDepth)
+    (Plot L) 
+    (map '((X) 
       (L-Run 
         (Fn (list (car X))) 
-        (inc D))) L)) ) )
+        (inc D))) L)) )
     
 
 # ----------------------------------------------------
@@ -40,7 +38,7 @@
     (A (chop "A-B--B+A++AA+B-")
      B (chop "+A-BB--B-A++A+B"))
       
-    (default MaxDepth 2)
+    (default MaxDepth 1)
     
     (L-Run A 1)))
 
@@ -54,9 +52,9 @@
       (A (chop "A-B--B+A++AA+B-")
          B (chop "+A-BB--B-A++A+B")
          C A
-         F '((L) (fish atom (mapcar '((X) (cond ((= X "A") A) ((= X "B") B) (T X))) L))) )
+         _Fn '((L) (fish atom (mapcar '((X) (cond ((= X "A") A) ((= X "B") B) (T X))) L))) )
 
-      (do N (setq C (F C)))
+      (do N (setq C (_Fn C)))
       (length (prin C))))
     
 # ----------------------------------
