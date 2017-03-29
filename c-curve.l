@@ -18,10 +18,10 @@
 # ----------------------------
 (de Connect-Line (Nxt-X Nxt-Y)
    
-   # (msg (text "---> Cnt: @1 Prv-XY: @2 @3 Nxt-XY: @4 @5"
-   #       *Cnt 
-   #       (round *Prv-X 2) (round *Prv-Y 2) 
-   #       (round Nxt-X 2) (round Nxt-Y 2)))
+    #(msg (text "---> Cnt: @1 Prv-XY: @2 @3 Nxt-XY: @4 @5"
+    #      *Cnt 
+    #      (round *Prv-X 3) (round *Prv-Y 3) 
+    #      (round Nxt-X 3) (round Nxt-Y 3)))
    
   
    (setq *Plot (cons (list Nxt-X Nxt-Y) *Plot)
@@ -163,11 +163,38 @@
 # -------------------------------
 # Peano Curve
 # F -> F+F-F-F-F+F+F+F-F
+#(de Peano-Curve (Length Angle N)
+#   (let 
+#      (A (chop "A+A-A-A-A+A+A+A-A")
+#      C A
+#      _Fn '((L) (fish atom (mapcar '((X) (cond ((= X "A") A) ((= X "B") B) (T X))) L))) ) 
+#
+#      # Generate points
+#      (do N (setq C (_Fn C)))
+#
+#      # Plot points
+#      (map '((P)
+#         (case (car P)
+#            (("A") (Plot-Line Length Angle))
+#            ("+" (setq Angle (+ Angle PI/2)))
+#            ("-" (setq Angle (- Angle PI/2))) 
+#            (("A" "B") NIL)
+#            (T (msg (text "?Peano-Curve: No-match: @1" (car P)))) )) C )
+#
+#   )
+#)
+
+# -------------------------------
+# rules: {
+#      A: 'AFBFA-F-BFAFB+F+AFBFA',
+#      B: 'BFAFB+F+AFBFA-F-BFAFB'
+
 (de Peano-Curve (Length Angle N)
-   (let 
-      (A (chop "A+A-A-A-A+A+A+A-A")
+   (let
+      (A (chop "AFBFA-F-BFAFB+F+AFBFA")
+       B (chop "BFAFB+F+AFBFA-F-BFAFB")
       C A
-      _Fn '((L) (fish atom (mapcar '((X) (cond ((= X "A") A) ((= X "B") B) (T X))) L))) ) 
+      _Fn '((L) (fish atom (mapcar '((X) (cond ((= X "A") A) ((= X "B") B) (T X))) L))) )
 
       # Generate points
       (do N (setq C (_Fn C)))
@@ -175,13 +202,14 @@
       # Plot points
       (map '((P)
          (case (car P)
-            (("A") (Plot-Line Length Angle))
+            (("F") (Plot-Line Length Angle))
             ("+" (setq Angle (+ Angle PI/2)))
-            ("-" (setq Angle (- Angle PI/2))) 
+            ("-" (setq Angle (- Angle PI/2)))
             (("A" "B") NIL)
             (T (msg (text "?Peano-Curve: No-match: @1" (car P)))) )) C )
 
-   )
+
+  )
 )
  
 
@@ -375,15 +403,15 @@
 # GUI Hooks
 
 (setq *CurrentPlot NIL    
-      *StepSize 1       
+      *StepSize 8       
       *Step T           
-      *RefreshDelay 200
+      *RefreshDelay 500
       *Resume NIL)
 
 (de Draw-Dragon-Curve ()
    (msg ">> Draw Dragon Curve") 
    (setq *Delay *RefreshDelay *CurrentPlot NIL *Step T)
-   (Run-Dragon-Curve 64.0 0.0 1.0 1000000))
+   (Run-Dragon-Curve 1.0 0.0 1.0 1000000))
 
 (de Draw-C-Curve ()
    (msg ">> Draw C-Curve") 
@@ -393,7 +421,7 @@
 (de Draw-Gosper-Curve ()
    (msg ">> Draw Gosper-Curve") 
    (setq *Delay *RefreshDelay *CurrentPlot NIL *Step T) 
-   (Run-Gosper-Curve 64.0 0.0 3 2000000))
+   (Run-Gosper-Curve 1.0 0.0 2 2000000))
 
 (de Draw-Sier-Curve ()
    (msg ">> Draw Sier-Curve") 
@@ -408,12 +436,12 @@
 (de Draw-Hilbert-Curve ()
    (msg ">> Draw Hilbert-Curve") 
    (setq *Delay *RefreshDelay *CurrentPlot NIL *Step T) 
-   (Run-Hilbert-Curve 2.0 0.0 6 2000000))
+   (Run-Hilbert-Curve 1.0 0.0 4 2000000))
 
 (de Draw-Peano-Curve ()
    (msg ">> Draw Peano-Curve") 
    (setq *Delay *RefreshDelay *CurrentPlot NIL *Step T) 
-   (Run-Peano-Curve 2.0 0.0 2 2000000))
+   (Run-Peano-Curve 1.0 0.0 3 2000000))
 
 
 (de Stop-Draw ()
