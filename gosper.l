@@ -123,6 +123,9 @@
                   (gui '(+Button)
                      "Peano" 
                      '(Draw-Peano-Curve))
+                  (gui '(+Button)
+                     "Moore" 
+                     '(Draw-Moore-Curve))
                   (----)
                    (gui '(+Able +Button)
                      '(lt0 *Delay)

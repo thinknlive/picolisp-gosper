@@ -205,5 +205,55 @@
             (default _MaxDepth 13)
             (_L-Run A 1) ) ) ) ) 
 
+(de ThueMorseGen (D)
+   (if (=T D)
+      (co 'thuemorsegen)
+      (co 'thuemorsegen
+         (let
+            (A (chop "AB") 
+               B (chop "BA")
+               _MaxDepth D 
+               _Plot '((L) (mapc yield L))
+               _Fn
+               '((X)
+                  (cond
+                     ((= X "A") A)
+                     ((= X "B") B)
+                     (T (list X)) ) )
+               _L-Run
+               '((L D)
+                  (if (>= D _MaxDepth)
+                     (_Plot L)
+                     (mapc
+                        '((X) (_L-Run (_Fn X) (inc D)))
+                        L ) ) ) ) 
+            (default _MaxDepth 13)
+            (_L-Run A 1) ) ) ) ) 
+
+(de HilbertGen (D)
+   (if (=T D)
+      (co 'hilbertgen)
+      (co 'hilbertgen
+         (let
+            (A (chop "+BF-AFA-FB+") 
+               B (chop "-AF+BFB+FA-")
+               _MaxDepth D 
+               _Plot '((L) (mapc yield L))
+               _Fn
+               '((X)
+                  (cond
+                     ((= X "A") A)
+                     ((= X "B") B)
+                     (T (list X)) ) )
+               _L-Run
+               '((L D)
+                  (if (>= D _MaxDepth)
+                     (_Plot L)
+                     (mapc
+                        '((X) (_L-Run (_Fn X) (inc D)))
+                        L ) ) ) ) 
+            (default _MaxDepth 13)
+            (_L-Run A 1) ) ) ) ) 
+
 
 

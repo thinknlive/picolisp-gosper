@@ -240,6 +240,37 @@
    )
 )
 
+# -------------------------------
+# Moore curve 
+# Alphabet: L, R
+# Constants: F, +, −
+# Axiom: AFA+F+AFA
+# Production rules:
+# A -> −BF+AFA+FB−
+# B -> +AF−BFB−FA+
+
+(de Moore-Curve (Length Angle N) 
+   (let 
+      (A (chop "-BF+AFA+FB-")
+       B (chop "+AF-BFB-FA+")
+       C (chop "AFA+F+AFA") 
+       _Fn '((L) (fish atom (mapcar '((X) (cond ((= X "A") A) ((= X "B") B) (T X))) L))) ) 
+
+      # Generate points
+      (do N (setq C (_Fn C)))
+
+      # Plot points
+      (map '((P)
+         (case (car P)
+            (("F") (Plot-Line Length Angle))
+            ("+" (setq Angle (+ Angle PI/2)))
+            ("-" (setq Angle (- Angle PI/2))) 
+            (("A" "B") NIL)
+            (T (msg (text "?Moore-Curve: No-match: @1" (car P)))) )) C )
+
+   )
+)
+
 
 # ################################
 # Wrapper functions for generators
@@ -358,7 +389,7 @@
 # ---------------------------------------
 (de Run-Hilbert-Curve (Length Angle N Cnt)
    
-   (setq *Plot NIL
+   (setq *Plot '((0.0 0.0)) 
       *Cnt (ifn Cnt 10000 Cnt)
       *Prv-X 0.0
       *Prv-Y 0.0
@@ -380,7 +411,7 @@
 # ---------------------------------------
 (de Run-Peano-Curve (Length Angle N Cnt)
    
-   (setq *Plot NIL
+   (setq *Plot '((0.0 0.0)) 
       *Cnt (ifn Cnt 10000 Cnt)
       *Prv-X 0.0
       *Prv-Y 0.0
@@ -399,11 +430,34 @@
 
 )
 
+# ---------------------------------------
+(de Run-Moore-Curve (Length Angle N Cnt)
+   
+   (setq *Plot '((0.0 0.0))
+      *Cnt (ifn Cnt 10000 Cnt)
+      *Prv-X 0.0
+      *Prv-Y 0.0
+      *Max-X NIL *Max-Y NIL
+      *Min-X NIL *Min-Y NIL)
+   (default N 3)
+   
+   (Moore-Curve Length Angle N)
+   (setq *Plot (reverse *Plot))
+   (ifn (car *Plot) (pop '*Plot))
+   
+   (msg (text "--->Moore-Curve Cnt: @1 Min-XY: @2 @3 Max-XY: @4 @5"
+      (length *Plot) 
+      (round *Min-X 2) (round *Min-Y 2) 
+      (round *Max-X 2) (round *Max-Y 2)))
+
+)
+
+
 # ######################################
 # GUI Hooks
 
 (setq *CurrentPlot NIL    
-      *StepSize 8       
+      *StepSize 3       
       *Step T           
       *RefreshDelay 500
       *Resume NIL)
@@ -426,23 +480,33 @@
 (de Draw-Sier-Curve ()
    (msg ">> Draw Sier-Curve") 
    (setq *Delay *RefreshDelay *CurrentPlot NIL *Step T) 
-   (Run-Sier-Curve 2.0 0.0 6 2000000))
+   (Run-Sier-Curve 2.0 0.0 3 2000000))
 
 (de Draw-Koch-Curve ()
    (msg ">> Draw Koch-Curve") 
    (setq *Delay *RefreshDelay *CurrentPlot NIL *Step T) 
-   (Run-Koch-Curve 2.0 0.0 4 2000000))
+   (Run-Koch-Curve 2.0 0.0 2 2000000))
 
-(de Draw-Hilbert-Curve ()
-   (msg ">> Draw Hilbert-Curve") 
+(de Draw-Hilbert-Curve (Depth)
+   (msg ">> Draw Hilbert-Curve")
+   (setq *StepSize 4)
+   (default Depth 3)
    (setq *Delay *RefreshDelay *CurrentPlot NIL *Step T) 
-   (Run-Hilbert-Curve 1.0 0.0 4 2000000))
+   (Run-Hilbert-Curve 1.0 0.0 Depth 2000000))
 
-(de Draw-Peano-Curve ()
+(de Draw-Peano-Curve (Depth)
    (msg ">> Draw Peano-Curve") 
+   (setq *StepSize 3)
+   (default Depth 2)
    (setq *Delay *RefreshDelay *CurrentPlot NIL *Step T) 
-   (Run-Peano-Curve 1.0 0.0 3 2000000))
+   (Run-Peano-Curve 1.0 0.0 Depth 2000000))
 
+(de Draw-Moore-Curve (Depth)
+   (msg ">>Draw Moore-Curve")
+   (setq *StepSize 2)
+   (default Depth 3)
+   (setq *Delay *RefreshDelay *CurrentPlot NIL *Step T)
+   (Run-Moore-Curve 1.0 0.0 Depth 2000000))
 
 (de Stop-Draw ()
    (msg ">> Stop") 
